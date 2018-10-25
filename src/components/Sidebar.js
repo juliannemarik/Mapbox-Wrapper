@@ -1,35 +1,13 @@
 import './Body.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeWaterColor, toggleStations, changeMarkerSize } from '../store/index';
 
 const Sidebar = props => {
-  const { changeWaterColor, toggleStations, changeMarkerSize } = props;
-
-  const handleColorChange = event => {
-    const color = event.target.value;
-    changeWaterColor(color);
-  };
-
-  const handleStations = event => {
-    const visibility = event.target.value === 'on' ? 'visible' : 'none';
-    toggleStations(visibility);
-  };
-
-  const handleSizeChange = event => {
-    console.log('SIZE CHANGE', event.target.value)
-    const size = event.target.value;
-    changeMarkerSize(Number(size));
-  }
-
   return (
     <div id="sidebar">
       <h1>MAP STYLING</h1>
       <form>
-        <div
-          className="styleOption mapStyle"
-          onChange={event => handleColorChange(event)}
-        >
+        <div className="styleOption mapStyle">
           <h3>WATER COLOR</h3>
           <label className="sidebarField lightBlue">
             <input
@@ -57,10 +35,7 @@ const Sidebar = props => {
           </label>
         </div>
 
-        <div
-          className="styleOption evStations"
-          onChange={event => handleStations(event)}
-        >
+        <div className="styleOption evStations">
           <h3> EV STATIONS </h3>
           <label className="sidebarField">
             <input type="radio" value="on" name="chargingStation" />
@@ -72,14 +47,11 @@ const Sidebar = props => {
           </label>
         </div>
 
-        <div
-        className="styleOption icon"
-        onChange={event => handleSizeChange(event)}
-        >
+        <div className="styleOption icon">
           <h3>MARKER SIZE</h3>
           <input
             type="number"
-            step = "0.5"
+            step="0.5"
             min="1"
             max="10"
             className="zoomInput"
@@ -92,17 +64,7 @@ const Sidebar = props => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    changeWaterColor: color => {
-      dispatch(changeWaterColor(color));
-    },
-    toggleStations: visibility => {
-      dispatch(toggleStations(visibility));
-    },
-    changeMarkerSize: size => {
-      dispatch(changeMarkerSize(size));
-    }
-  };
+  return {};
 };
 
 export default connect(
