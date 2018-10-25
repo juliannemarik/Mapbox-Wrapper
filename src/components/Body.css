@@ -30,3 +30,19 @@
   width: 50%;
   text-align: center;
 }
+#colorRadio {
+  display: none;
+}
+.lightBlue {
+  background-color: hsl(185, 9%, 81%);
+  padding: 10px;
+}
+.darkBlue {
+  background-color: hsl(226, 51%, 60%);
+  padding: 10px;
+}
+.darkTurquoise {
+  background-color: hsl(197, 94.6%, 29.2%);
+  padding: 10px;
+}
+

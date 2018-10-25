@@ -1,17 +1,18 @@
 import './Body.css';
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeMapStyle, toggleStations } from '../store/index';
+import { changeWaterColor, toggleStations } from '../store/index';
 // const maki = require('maki');
 
 
 
 const Sidebar = props => {
-  const { map, changeMapStyle, toggleStations } = props;
+  const { changeWaterColor, toggleStations } = props;
 
   const handleStyleChange = (event) => {
-    const style = event.target.value;
-    changeMapStyle(map, `mapbox://styles/mapbox/${style}-v9`)
+    console.log('COLOR', event.target.value);
+    const color = event.target.value;
+    changeWaterColor(color)
   }
 
   const handleStations = (event) => {
@@ -25,23 +26,37 @@ const Sidebar = props => {
       <form>
         <div
         className="styleOption mapStyle"
-        // onChange={(event) => handleStyleChange(event)}
+        onChange={(event) => handleStyleChange(event)}
         >
-          <h3>MAP STYLE</h3>
-          <select className="sidebarField colorInput">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="streets">Streets</option>
-            <option value="satellite-streets">Satellite</option>
-          </select>
+          <h3>WATER COLOR</h3>
+          <label className="sidebarField lightBlue">
+            <input
+              id = "colorRadio"
+              type="radio"
+              value="hsl(185, 9%, 81%)"
+              name="waterColor"/>
+          </label>
+          <label className="sidebarField darkBlue">
+            <input
+              id = "colorRadio"
+              type="radio"
+              value="hsl(226, 51%, 60%)"
+              name="waterColor"/>
+          </label>
+          <label className="sidebarField darkTurquoise">
+            <input
+              id = "colorRadio"
+              type="radio"
+              value="hsl(197, 94.6%, 29.2%)"
+              name="waterColor"/>
+          </label>
         </div>
 
         <div
         className="styleOption evStations"
-        onChange={(event) => handleStations(event)}
-        >
+        onChange={(event) => handleStations(event)}>
           <h3> EV STATIONS </h3>
-          <label className="sidebarField">
+          <label className="sidebarField" >
             <input
               type="radio"
               value="on"
@@ -58,7 +73,7 @@ const Sidebar = props => {
         </div>
 
         <div className="styleOption icon">
-          <h3>MAP ZOOM</h3>
+          <h3>MARKER SIZE</h3>
           <input
             type="number"
             min="1"
@@ -79,9 +94,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    changeMapStyle: (map, style) => {
-      const newStyle = map.setStyle(style)
-      dispatch(changeMapStyle(newStyle))
+    changeWaterColor: (color) => {
+      dispatch(changeWaterColor(color))
     },
     toggleStations: (visibility) => {
       dispatch(toggleStations(visibility))

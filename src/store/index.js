@@ -1,12 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import loggingMiddleware from 'redux-logger';
-import Immutable from 'immutable';
 import axios from 'axios';
 
 // ACTION TYPES
 const SET_STYLE = 'SET_STYLE';
-const CHANGE_MAP_STYLE = 'CHANGE_MAP_STYLE'
+const CHANGE_WATER_COLOR = 'CHANGE_WATER_COLOR'
 const SET_CHARGING_STATIONS = 'SET_CHARGING_STATIONS'
 const TOGGLE_STATIONS = 'TOGGLE_STATIONS'
 
@@ -15,9 +14,9 @@ export const setStyle = style => ({
   type: SET_STYLE,
   style,
 });
-export const changeMapStyle = style => ({
-  type: CHANGE_MAP_STYLE,
-  style
+export const changeWaterColor = color => ({
+  type: CHANGE_WATER_COLOR,
+  color
 });
 export const setChargingStations = (chargingStations) => ({
   type: SET_CHARGING_STATIONS,
@@ -45,8 +44,11 @@ const handlers = {
   [SET_STYLE]: (state, action) => {
     return { ...state, style: action.style };
   },
-  [CHANGE_MAP_STYLE]: (state, action) => {
-    return {...state, style: Immutable.fromJS(action.style)}
+  [CHANGE_WATER_COLOR]: (state, action) => {
+    const newStyle = {...state.style}
+    const layer = newStyle.layers.find((layer) => layer.id === 'water');
+    layer.paint[`fill-color`] = action.color
+    return {...state, style: newStyle}
   },
   [SET_CHARGING_STATIONS]: (state, action) => {
     return {...state, chargingStations: action.chargingStations}
