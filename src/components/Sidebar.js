@@ -15,17 +15,18 @@ const Sidebar = props => {
   }
 
   const handleStations = (event) => {
-    const visibility = event.target.value === 'all' ? 'visible' : 'none';
-    console.log('station change!')
-    toggleStations();
-
+    const visibility = event.target.value === 'on' ? 'visible' : 'none';
+    toggleStations(visibility);
   }
 
   return (
     <div id="sidebar">
       <h1>MAP STYLING</h1>
       <form>
-        <div className="styleOption mapStyle" onChange={(event) => handleStyleChange(event)}>
+        <div
+        className="styleOption mapStyle"
+        // onChange={(event) => handleStyleChange(event)}
+        >
           <h3>MAP STYLE</h3>
           <select className="sidebarField colorInput">
             <option value="light">Light</option>
@@ -43,30 +44,16 @@ const Sidebar = props => {
           <label className="sidebarField">
             <input
               type="radio"
-              value="none"
+              value="on"
               name="chargingStation"/>
-            None
+            On
           </label>
           <label className="sidebarField">
             <input
               type="radio"
-              value="all"
+              value="off"
               name="chargingStation"/>
-            All
-          </label>
-          <label className="sidebarField">
-            <input
-            type="radio"
-            value="tesla"
-            name="chargingStation" />
-            Tesla
-          </label>
-          <label className="sidebarField">
-            <input
-            type="radio"
-            value="free"
-            name="chargingStation" />
-            Free
+            Off
           </label>
         </div>
 
@@ -96,8 +83,8 @@ const mapDispatchToProps = dispatch => {
       const newStyle = map.setStyle(style)
       dispatch(changeMapStyle(newStyle))
     },
-    toggleStations: () => {
-      dispatch(toggleStations())
+    toggleStations: (visibility) => {
+      dispatch(toggleStations(visibility))
     }
   };
 };

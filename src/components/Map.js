@@ -3,29 +3,28 @@ import { connect } from 'react-redux';
 import './Body.css';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { setMap, setStyle, fetchAllStations } from '../store/index';
+import Immutable from 'immutable';
+import { setStyle, fetchAllStations } from '../store/index';
 
 class Map extends Component {
 
   componentDidMount() {
     const { accessToken, styleName, lon, lat, zoomScale } = this.props;
-    const { setMap, setStyle, setInitialStations } = this.props;
+    const { setStyle, setInitialStations } = this.props;
 
     mapboxgl.accessToken = accessToken;
 
-    const map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: 'map', // html element id in render
       style: `mapbox://styles/${styleName}`,
       center: [lon, lat], // note lon comes before lat - geoJSON convention
       zoom: [zoomScale],
     });
-    map.on('load', async () => {
-      setMap(map);
-      setStyle(map.style);
+    this.map.on('load', async () => {
       await setInitialStations().then(() => {
         const { chargingStations } = this.props;
 
-        map.addSource('ev-charging-stations', {
+        this.map.addSource('ev-charging-stations', {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
@@ -42,22 +41,34 @@ class Map extends Component {
           },
         });
 
-        map.addLayer({
+        this.map.addLayer({
           id: 'allStations',
           type: 'circle',
           source: 'ev-charging-stations',
           layout: {
-            'visibility': 'visible'
+            'visibility': 'none'
           },
           paint: {
             'circle-radius': 3,
             'circle-color': '#B42222',
           },
         });
+        console.log('GET STYLE 1', this.map.getStyle())
+        setStyle(this.map.getStyle());
       });
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const currentStyle = this.props.style;
+    const previousStyle = prevProps.style;
+
+    if(this.props.style === null) return;
+
+    if(!Immutable.is(previousStyle, currentStyle)) {
+      this.map.setStyle(currentStyle)
+    }
+  }
 
   render() {
     return <div id="map" />;
@@ -72,7 +83,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setMap: map => dispatch(setMap(map)),
     setStyle: style => dispatch(setStyle(style)),
     setInitialStations: () => dispatch(fetchAllStations()),
   };
