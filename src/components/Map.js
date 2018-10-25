@@ -7,7 +7,6 @@ import Immutable from 'immutable';
 import { setStyle, fetchAllStations } from '../store/index';
 
 class Map extends Component {
-
   componentDidMount() {
     const { accessToken, styleName, lon, lat, zoomScale } = this.props;
     const { setStyle, setInitialStations } = this.props;
@@ -28,16 +27,15 @@ class Map extends Component {
           type: 'geojson',
           data: {
             type: 'FeatureCollection',
-            features:
-              chargingStations.map(station => {
-                return {
-                  type: 'Feature',
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [station.longitude, station.latitude],
-                  },
-                };
-              }),
+            features: chargingStations.map(station => {
+              return {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [station.longitude, station.latitude],
+                },
+              };
+            }),
           },
         });
 
@@ -46,14 +44,14 @@ class Map extends Component {
           type: 'circle',
           source: 'ev-charging-stations',
           layout: {
-            'visibility': 'none'
+            visibility: 'none',
           },
           paint: {
             'circle-radius': 3,
             'circle-color': '#B42222',
           },
         });
-        console.log('GET STYLE 1', this.map.getStyle())
+        console.log('GET STYLE 1', this.map.getStyle());
         setStyle(this.map.getStyle());
       });
     });
@@ -63,11 +61,11 @@ class Map extends Component {
     const currentStyle = this.props.style;
     const previousStyle = prevProps.style;
 
-    if(this.props.style === null) return;
+    if (this.props.style === null) return;
 
-    if(!Immutable.is(previousStyle, currentStyle)) {
-      console.log('component did update')
-      this.map.setStyle(currentStyle)
+    if (!Immutable.is(previousStyle, currentStyle)) {
+      console.log('component did update');
+      this.map.setStyle(currentStyle);
     }
   }
 
