@@ -64,7 +64,6 @@ class Map extends Component {
     if (this.props.style === null) return;
 
     if (!Immutable.is(previousStyle, currentStyle)) {
-      console.log('component did update');
       this.map.setStyle(currentStyle);
     }
   }
