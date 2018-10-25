@@ -19,6 +19,7 @@ class Map extends Component {
       center: [lon, lat], // note lon comes before lat - geoJSON convention
       zoom: [zoomScale],
     });
+
     this.map.on('load', async () => {
       await setInitialStations().then(() => {
         const { chargingStations } = this.props;
@@ -51,7 +52,6 @@ class Map extends Component {
             'circle-color': '#B42222',
           },
         });
-        console.log('GET STYLE 1', this.map.getStyle());
         setStyle(this.map.getStyle());
       });
     });
@@ -90,3 +90,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Map);
+
+
