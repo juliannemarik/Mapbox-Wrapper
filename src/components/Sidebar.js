@@ -91,12 +91,6 @@ const Sidebar = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    map: state.map,
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     changeWaterColor: color => {
@@ -112,6 +106,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Sidebar);
